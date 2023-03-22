@@ -1,12 +1,8 @@
-#![allow(dead_code, unused)]
-
 use clearscreen::clear;
 use colored::*;
 use rand::prelude::SliceRandom;
 use rand::thread_rng;
-use std::fs::{canonicalize, read_to_string};
 use std::io::{self, BufRead, Lines, StdinLock};
-use std::path::PathBuf;
 
 type Wordle = [[char; 5]; 6];
 

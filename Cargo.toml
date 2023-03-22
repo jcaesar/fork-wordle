@@ -10,5 +10,8 @@ repository = "https://github.com/kelsny/wordle"
 
 [dependencies]
 colored = "2"
-rand = "0.8.4"
-clearscreen = "1.0.9"
+rand = "0.8.5"
+clearscreen = "2.0.0"
+
+[patch.crates-io]
+which = { git = "https://github.com/harryfei/which-rs" }

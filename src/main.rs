@@ -87,7 +87,7 @@ fn get_input(stdin: &mut Lines<StdinLock>) -> String {
         exit(1);
     }
 
-    input.unwrap().unwrap()
+    input.unwrap().unwrap().to_lowercase()
 }
 
 fn main() {

@@ -9,18 +9,15 @@ use std::{
 
 type Wordle = [[char; 5]; 6];
 
-fn words() -> Vec<String> {
-    include_str!("../words.txt")
-        .lines()
-        .map(|x| String::from(x))
-        .collect::<Vec<String>>()
+fn words() -> Vec<&'static str> {
+    include_str!("../words.txt").lines().collect()
 }
 
-fn random_word(words: Vec<String>) -> String {
-    words.choose(&mut thread_rng()).unwrap().to_string()
+fn random_word<'a>(words: &[&'a str]) -> &'a str {
+    words.choose(&mut thread_rng()).unwrap()
 }
 
-fn print_wordle(wordle: Wordle, word: &String) {
+fn print_wordle(wordle: Wordle, word: &str) {
     println!("┏━━━━━━━━━━━━━┓");
     println!("┃ {} ┃", "W O R D L E".bold());
     println!("┣━━━━━━━━━━━━━┫");
@@ -59,13 +56,13 @@ fn print_wordle(wordle: Wordle, word: &String) {
     println!("┗━━━━━━━━━━━━━┛");
 }
 
-fn get_guess(stdin: &mut Lines<StdinLock>, wordle: Wordle, word: &String) -> String {
+fn get_guess(stdin: &mut Lines<StdinLock>, wordle: Wordle, word: &str) -> String {
     let mut guess = get_input(stdin);
 
-    while !words().contains(&guess) {
+    while !words().contains(&guess.as_str()) {
         clear().expect("Failed to clear screen");
 
-        print_wordle(wordle, &word);
+        print_wordle(wordle, word);
 
         if guess.len() != 5 {
             println!("{}", "Please enter a 5-letter word.".red());
@@ -96,7 +93,7 @@ fn main() {
 
     clear().expect("Failed to clear screen");
 
-    let word = random_word(words());
+    let word = random_word(&words());
 
     let mut wordle = [[' '; 5]; 6];
 

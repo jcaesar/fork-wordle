@@ -91,6 +91,9 @@ fn get_input(stdin: &mut Lines<StdinLock>) -> String {
 }
 
 fn main() {
+    #[cfg(target_os = "wasi")]
+    colored::control::set_override(true);
+
     clear().expect("Failed to clear screen");
 
     let word = random_word(words());

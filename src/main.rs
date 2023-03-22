@@ -2,7 +2,10 @@ use clearscreen::clear;
 use colored::*;
 use rand::prelude::SliceRandom;
 use rand::thread_rng;
-use std::io::{self, BufRead, Lines, StdinLock};
+use std::{
+    io::{self, BufRead, Lines, StdinLock},
+    process::exit,
+};
 
 type Wordle = [[char; 5]; 6];
 
@@ -57,7 +60,7 @@ fn print_wordle(wordle: Wordle, word: &String) {
 }
 
 fn get_guess(stdin: &mut Lines<StdinLock>, wordle: Wordle, word: &String) -> String {
-    let mut guess = stdin.next().unwrap().unwrap();
+    let mut guess = get_input(stdin);
 
     while !words().contains(&guess) {
         clear().expect("Failed to clear screen");
@@ -70,10 +73,21 @@ fn get_guess(stdin: &mut Lines<StdinLock>, wordle: Wordle, word: &String) -> Str
             println!("{}", "Word is not in word list.".red());
         }
 
-        guess = stdin.next().unwrap().unwrap();
+        guess = get_input(stdin);
     }
 
     guess
+}
+
+fn get_input(stdin: &mut Lines<StdinLock>) -> String {
+    let input = stdin.next();
+
+    if input.is_none() {
+        println!("{}", "Input closed, game aborted!".red());
+        exit(1);
+    }
+
+    input.unwrap().unwrap()
 }
 
 fn main() {
